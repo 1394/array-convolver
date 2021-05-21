@@ -1,0 +1,20 @@
+{
+  "name": "array-convolver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1394/array-convolver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1394/array-convolver/issues"
+  },
+  "homepage": "https://github.com/1394/array-convolver#readme"
+}
