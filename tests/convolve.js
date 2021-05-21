@@ -16,3 +16,19 @@ const res = convolve(src, (row) => {
 })
 
 console.dir(res, {depth: 10})
+
+
+const rules = {
+  to: 'array',
+  map: [
+    {
+      from: 'protos',
+      to: 'array',
+      map: (([ymRow], row) => {
+        row.percent = (row.total / ymRow.total) * 100
+        return row
+      })
+    }
+  ],
+  sort: {key: 'ym', compare: '<'}
+}
