@@ -1,9 +1,10 @@
 const {pathSet} = require('./pathset')
 
-const convolve = (arr, rules) => {
+const convolve = (arr, rulesHandler) => {
   return arr.reduce((acc, row) => {
+    const rules = rulesHandler(row)
     rules.forEach((rule) => {
-      pathSet(acc, rule.path, (val) => rule.handler(row, val), {modifySource: true})
+      acc = pathSet(acc, rule.path, rule.handler)
     })
     return acc
   }, {})

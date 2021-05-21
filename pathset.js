@@ -12,7 +12,6 @@ const getPathProp = (obj, pathArr) => {
 const pathSet = (src, path, handlerOrInitVal, opts = {}) => {
   const {modifySource} = opts
   const source = Object.fromEntries(Object.entries(src))
-  // const source = JSON.parse(JSON.stringify(src))
 
   if (!source) {
     throw new Error('source cant be empty')
@@ -37,9 +36,9 @@ const pathSet = (src, path, handlerOrInitVal, opts = {}) => {
     const prop = path.pop()
     const acc2 = {}
     acc2[prop] = acc
-    console.log({prop, type: typeof prop, acc2, acc})
+    // console.log({prop, type: typeof prop, acc2, acc})
     if (modifySource) {
-      acc = Object.assign(getPathProp(source, path), acc2)
+      acc = Object.assign(getPathProp(source, path) || {}, acc2)
     } else {
       acc = Object.assign({}, getPathProp(source, path), acc2)
     }
