@@ -72,4 +72,5 @@ module.exports = {
   convolve,
   groupby,
   reduceby,
+  sortFn,
 }
