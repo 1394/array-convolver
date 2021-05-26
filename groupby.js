@@ -5,7 +5,7 @@ const groupby = (arr, idx, defKey = 'default') => arr.reduce((acc, el) => {
   return acc
 }, {})
 
-const sortFn = (prop, dir = 'asc') => {
+const sortFn = ({prop, dir = 'asc'}) => {
   dir = dir.toLowerCase()
   return (a, b) => {
     const a1 = a[prop]
