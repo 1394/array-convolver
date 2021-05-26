@@ -23,7 +23,8 @@ const convolve = (data, rule) => {
   result.arr = Object.entries(result.groupby).map(([key, values]) => {
     return rule.assemble(
       key,
-      rule.values ? convolve(values, rule.values) : values
+      rule.values ? convolve(values, rule.values) : values,
+      values,
     )
   })
   if (rule.sort) {
