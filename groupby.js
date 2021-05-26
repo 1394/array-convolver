@@ -7,16 +7,17 @@ const groupby = (arr, idx, defKey = 'default') => arr.reduce((acc, el) => {
 
 const sortFn = ({prop, dir = 'asc'}) => {
   dir = dir.toLowerCase()
-  return (a, b) => {
-    const a1 = a[prop]
-    const b1 = b[prop]
-    if (a1 === b1) {
-      return 0
+  if (dir === 'asc') {
+    return (a, b) => {
+      const a1 = a[prop]
+      const b1 = b[prop]
+      return a1 === b1 ? 0 : (a1 > b1 ? 1 : -1)
     }
-    if (a1 > b1) {
-      return dir === 'asc' ? 1 : -1
-    } else {
-      return dir === 'desc' ? -1 : 1
+  } else {
+    return (a, b) => {
+      const a1 = a[prop]
+      const b1 = b[prop]
+      return a1 === b1 ? 0 : (a1 < b1 ? 1 : -1)
     }
   }
 }
