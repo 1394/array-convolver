@@ -1,34 +1,21 @@
-const {convolve} = require('../index')
-const assert = require('assert')
+// const {convolve} = require('../index')
+// const assert = require('assert')
 
-const src = [
-  {a: 1, b: 2, c: 31},
-  {a: 2, b: 3, c: 32},
-  {a: 3, b: 4, c: 33},
-  {a: 4, b: 5, c: 34},
-  {a: 1, b: 50, c: 31},
-]
+// const testData = require('./convolve_data.json')
+// console.log('*'.repeat(10), 'testData', '*'.repeat(10))
+// console.dir(testData, {depth: 10})
+// console.log('*'.repeat(10), 'testData', '*'.repeat(10))
 
-const res = convolve(src, (row) => {
-  return [
-    {path: `${row.a}.${row.c}`, handler(val) {return row.b + (val || 0)}}
-  ]
-})
+// const test = convolve(testData, (row) => {
+//   return [
+//     {path: [row.ym, 'ym'], handler: () => row.ym},
+//     {path: [row.ym, 'total'], handler: (val = 0) => parseInt(row.itemTotal) + val},
+//     {path: [row.ym, 'protos', row.protoName, 'protoname'], handler: () => row.protoName},
+//     {path: [row.ym, 'protos', row.protoName, 'total'], handler: (val = 0) => parseInt(row.itemTotal) + val},
+//     {path: [row.ym, 'protos', row.protoName, 'items'], handler: (items = []) => {items.push(row); return items}},
+//   ]
+// })
 
-console.dir(res, {depth: 10})
-
-
-const rules = {
-  to: 'array',
-  map: [
-    {
-      from: 'protos',
-      to: 'array',
-      map: (([ymRow], row) => {
-        row.percent = (row.total / ymRow.total) * 100
-        return row
-      })
-    }
-  ],
-  sort: {key: 'ym', compare: '<'}
-}
+// console.log('*'.repeat(10), 'result', '*'.repeat(10))
+// console.dir(test, {depth: 10})
+// console.log('*'.repeat(10), 'result', '*'.repeat(10))
