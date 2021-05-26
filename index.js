@@ -1,6 +1,6 @@
 const {pathSet} = require('./pathset')
 const {convert} = require('./convert')
-const {convolve, reduceby, groupby} = require('./groupby')
+const {convolve, reduceby, groupby, sortFn} = require('./groupby')
 
 
 module.exports = {
@@ -9,4 +9,5 @@ module.exports = {
   convert,
   reduceby,
   groupby,
+  sortFn,
 }
