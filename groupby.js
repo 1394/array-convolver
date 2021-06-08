@@ -6,7 +6,7 @@ const groupby = (arr, idx, defKey = 'default') => arr.reduce((acc, el) => {
 }, {})
 
 const groupbyFn = (arr, idx, defKey = 'default') => arr.reduce((acc, el) => {
-  const key = el[idx(el)] || defKey
+  const key = idx(el) || defKey
   acc[key] = acc[key] || []
   acc[key].push(el)
   return acc
