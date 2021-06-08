@@ -5,6 +5,13 @@ const groupby = (arr, idx, defKey = 'default') => arr.reduce((acc, el) => {
   return acc
 }, {})
 
+const groupbyFn = (arr, idx, defKey = 'default') => arr.reduce((acc, el) => {
+  const key = el[idx(el)] || defKey
+  acc[key] = acc[key] || []
+  acc[key].push(el)
+  return acc
+}, {})
+
 const sortFn = ({prop, dir = 'asc'}) => {
   dir = dir.toLowerCase()
   if (dir === 'asc') {
@@ -34,11 +41,13 @@ const sortFn = ({prop, dir = 'asc'}) => {
  */
 const convolve = (data, rule) => {
   const result = {}
-  if (rule.groupby && typeof rule.groupby === 'string') {
-    result.groupby = groupby(data, rule.groupby)
-  } else {
+
+  if (!['string', 'function'].includes(typeof rule.groupby)) {
     throw new Error('rule.groupby must be string and cant be empty')
   }
+
+  result.groupby = typeof rule.groupby === 'string' ? groupby(data, rule.groupby) : groupbyFn(data, rule.groupby)
+
   if (typeof rule.assemble !== 'function') {
     rule.assemble = (key, values) => {
       return {
