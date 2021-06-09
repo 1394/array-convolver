@@ -12,12 +12,12 @@ const groupbyFn = (arr, idx, defKey = 'default') => arr.reduce((acc, el) => {
   return acc
 }, {})
 
-const sortFn = ({prop, dir = 'asc'}) => {
+const sortFn = ({prop, dir = 'asc', convert}) => {
   dir = dir.toLowerCase()
   if (dir === 'asc') {
     return (a, b) => {
-      const a1 = a[prop]
-      const b1 = b[prop]
+      const a1 = typeof convert === 'function' ? convert(a[prop]) : a[prop]
+      const b1 = typeof convert === 'function' ? convert(b[prop]) : b[prop]
       return a1 === b1 ? 0 : (a1 > b1 ? 1 : -1)
     }
   } else {
