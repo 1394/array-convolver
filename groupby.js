@@ -12,18 +12,20 @@ const groupbyFn = (arr, idx, defKey = 'default') => arr.reduce((acc, el) => {
   return acc
 }, {})
 
-const sortFn = ({prop, dir = 'asc', convert}) => {
+const sortFn = ({prop, dir = 'asc', convert, debug}) => {
   dir = dir.toLowerCase()
   if (dir === 'asc') {
     return (a, b) => {
       const a1 = typeof convert === 'function' ? convert(a[prop]) : a[prop]
       const b1 = typeof convert === 'function' ? convert(b[prop]) : b[prop]
+      debug && console.log('sort asc: type a, type b, a, b, result', typeof a1, typeof b1, a1, b1, a1 === b1 ? 0 : (a1 > b1 ? 1 : -1))
       return a1 === b1 ? 0 : (a1 > b1 ? 1 : -1)
     }
   } else {
     return (a, b) => {
       const a1 = a[prop]
       const b1 = b[prop]
+      debug && console.log('sort desc: type a, type b, a, b, result', typeof a1, typeof b1, a1, b1, a1 === b1 ? 0 : (a1 < b1 ? 1 : -1))
       return a1 === b1 ? 0 : (a1 < b1 ? 1 : -1)
     }
   }
