@@ -33,13 +33,14 @@ const sortFn = ({prop, dir = 'asc', convert}) => {
  * 
  * @param {Array} data 
  * @param {Object} rule 
- * @param {String} rule.groupby key for grouping elements of input array
- * @param {String} rule.assemble function for creating element of resulting array, (key, groupValues, source)
- * @param {String} rule.values next rule for transform array of grouped elements by given key
- * @param {String} rule.sort comparator for sorting result
+ * @param {String|Function} rule.groupby key for grouping elements of input array
+ * @param {String|Function} rule.assemble function for creating element of resulting array, (key, groupValues, source)
+ * @param {Object} rule.values next rule for transform array of grouped elements by given key
+ * @param {Object|Function} rule.sort comparator for sorting result
+ * @param {Object} opts internal use for exchanging between rule results
  * @returns 
  */
-const convolve = (data, rule) => {
+const convolve = (data, rule, opts = {}) => {
   const result = {}
 
   if (!['string', 'function'].includes(typeof rule.groupby)) {
@@ -57,10 +58,18 @@ const convolve = (data, rule) => {
     }
   }
   result.arr = Object.entries(result.groupby).map(([key, values]) => {
+    if (rule.compute) {
+      if (rule.compute.__)
+      const element = Object.entries(rule.compute).reduce((acc, [prop, handler]) => {
+        acc[prop] = handler(values, acc)
+        return acc
+      }, {})
+    }
     return rule.assemble(
       key,
       rule.values ? convolve(values, rule.values) : values,
       values,
+      element
     )
   })
   if (typeof rule.sort === 'object' && typeof rule.sort.prop === 'string') {
