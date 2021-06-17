@@ -35,12 +35,15 @@ const sortFn = ({prop, dir = 'asc', convert}) => {
  * @param {Object} rule 
  * @param {String|Function} rule.groupby key for grouping elements of input array
  * @param {String|Function} rule.assemble function for creating element of resulting array, (key, groupValues, source)
- * @param {Object} rule.values next rule for transform array of grouped elements by given key
  * @param {Object|Function} rule.sort comparator for sorting result
- * @param {Object} opts internal use for exchanging between rule results
+ * @param {Array} rule.compute array of prop and handler for compute prop by handler with grouped element array
+ * @param {String} rule.compute[].prop property name for compute
+ * @param {Function} rule.compute[].handler handler(elements, parentComputedData, objectWithPreviouslyComputedPropsInCurrentRule)
+ * @param {Object} rule.values next rule for transform array of grouped elements by given key
+ * @param {Object} parentData internal use for exchanging between rule results
  * @returns 
  */
-const convolve = (data, rule, opts = {}) => {
+const convolve = (data, rule, parentData = {}) => {
   const result = {}
 
   if (!['string', 'function'].includes(typeof rule.groupby)) {
@@ -58,19 +61,27 @@ const convolve = (data, rule, opts = {}) => {
     }
   }
   result.arr = Object.entries(result.groupby).map(([key, values]) => {
-    if (rule.compute) {
-      if (rule.compute.__)
-      const element = Object.entries(rule.compute).reduce((acc, [prop, handler]) => {
-        acc[prop] = handler(values, acc)
+    let element
+    if (Array.isArray(rule.compute) && rule.compute.length) {
+      element = rule.compute.reduce((acc, {prop, handler}) => {
+        if (typeof handler === 'function') {
+          acc[prop] = handler(values, parentData, acc)
+        } else {
+          console.log(JSON.stringify(handler, true))
+          console.error(`compute handler for prop "${prop}" must be a function`)
+        }
         return acc
       }, {})
+      // parentData[rule.compute.$name] = element
     }
-    return rule.assemble(
+    const assemled = rule.assemble(
       key,
-      rule.values ? convolve(values, rule.values) : values,
+      rule.values ? convolve(values, rule.values, element) : values,
       values,
-      element
+      element,
+      parentData,
     )
+    return element ? Object.assign(element, assemled) : assembled
   })
   if (typeof rule.sort === 'object' && typeof rule.sort.prop === 'string') {
     rule.sort = sortFn(rule.sort)
