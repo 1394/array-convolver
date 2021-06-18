@@ -36,7 +36,7 @@ const sortFn = ({prop, dir = 'asc', convert, debug}) => {
  * @param {Array} data 
  * @param {Object} rule 
  * @param {String|Function} rule.groupby key for grouping elements of input array
- * @param {String|Function} rule.assemble function for creating element of resulting array, (key, groupValues, source)
+ * @param {String|Function} rule.assemble function for creating element of resulting array, (key, groupValues, {values, computed, parent})
  * @param {Object|Function} rule.sort comparator for sorting result
  * @param {Array} rule.compute array of prop and handler for compute prop by handler with grouped element array
  * @param {String} rule.compute[].prop property name for compute
@@ -74,14 +74,15 @@ const convolve = (data, rule, parentData = {}) => {
         }
         return acc
       }, {})
-      // parentData[rule.compute.$name] = element
     }
     const assemled = rule.assemble(
       key,
       rule.values ? convolve(values, rule.values, element) : values,
-      values,
-      element,
-      parentData,
+      {
+        values,
+        computed: element,
+        parent: parentData
+      },
     )
     return element ? Object.assign(element, assemled) : assembled
   })
