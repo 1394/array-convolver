@@ -75,7 +75,7 @@ const convolve = (data, rule, parentData = {}) => {
         return acc
       }, {})
     }
-    const assemled = rule.assemble(
+    const assembled = rule.assemble(
       key,
       rule.values ? convolve(values, rule.values, element) : values,
       {
@@ -84,7 +84,7 @@ const convolve = (data, rule, parentData = {}) => {
         parent: parentData
       },
     )
-    return element ? Object.assign(element, assemled) : assembled
+    return element ? Object.assign(element, assembled) : assembled
   })
   if (typeof rule.sort === 'object' && typeof rule.sort.prop === 'string') {
     rule.sort = sortFn(rule.sort)
